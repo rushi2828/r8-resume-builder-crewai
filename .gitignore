@@ -9,4 +9,3 @@ data/logs/*
 *.log
 .idea/
 .vscode/
-.env.*
