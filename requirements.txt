@@ -1,7 +1,7 @@
 crewai==0.14.4
-crewai-tools==0.1.5
-openai==1.14.3
+crewai-tools
 langchain==0.1.14
+langchain-openai==0.1.1
 python-dotenv
 uvicorn[standard]
 fastapi==0.110.0
@@ -9,3 +9,4 @@ pypdf2
 docx
 tiktoken
 requests
+google-search-results

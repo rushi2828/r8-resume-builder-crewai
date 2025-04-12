@@ -1,52 +1,44 @@
+# app/main.py
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from dotenv import load_dotenv
+from crewai import Crew
 from app.crew.agents import get_agents
 from app.crew.tasks import get_tasks
-from dotenv import load_dotenv # type: ignore
-import os
 
-load_dotenv() # load .env file
+load_dotenv()
 
-app = FastAPI(
-    title= "r8 Resume Builder (CrewAI Powered)",
-    description= "Optimize resumes using AI agents",
-    version= "1.0.0"
-)
+app = FastAPI()
+
 
 class OptimizeRequest(BaseModel):
     resume_text: str
     job_description: str
 
+
 @app.get("/")
 def health_check():
-    return {"status": "OK", "message":"Resume Builder API running 🚀"}
+    return {"status": "OK", "message": "Resume Builder is alive!"}
+
 
 @app.post("/optimize")
-def optimise_resume(request: OptimizeRequest):
+def optimize_resume(req: OptimizeRequest):
     try:
-        # Load your CrewAI agent
+        # Get agents and tasks
         agents = get_agents()
-        resume_agent = agents[0]
+        tasks = get_tasks(agent=agents[0], resume_text=req.resume_text, job_description=req.job_description)
 
-        # Build tasks using resume & job description
-        tasks = get_tasks(resume_agent, request.resume_text, request.job_description)
-
-        # Create crew and run
-        crew = crew(
-            agents=[resume_agent],
+        # ✅ Define crew properly
+        my_crew = Crew(
+            agents=agents,
             tasks=tasks,
             verbose=True
         )
 
-        result = crew.run()
+        # ✅ Run it
+        result = my_crew.kickoff()
         return {"optimized_resume": result}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-    # # Placeholder for optimization trigger
-    # return {"message": "Resume optimization will go here!"}
-
-
-
-
