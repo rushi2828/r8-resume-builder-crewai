@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+data/output/*
+data/input/*
+data/logs/*
+*.log
+.idea/
+.vscode/
+.env.*
+troubleshoot.sh

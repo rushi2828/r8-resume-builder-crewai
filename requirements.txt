@@ -1,0 +1,12 @@
+crewai
+crewai-tools==0.1.7
+openai
+langchain==0.0.305
+python-dotenv
+uvicorn[Standard]
+fastapi
+pypdf2
+docx
+tiktoken
+requests
+google-search-results
